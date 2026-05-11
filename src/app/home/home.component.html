@@ -1,0 +1,29 @@
+<div class="bem-vindo">
+    <div class="textoInicio">
+        <h1>Panos de prato sob encomenda</h1>
+        <p>Tudo de novo em utensílios encantadores</p>
+        <button>Encomendar</button>
+    </div>
+</div>
+
+<section class="categorias" id="categorias">
+  <div class="grid">
+    <div class="card">PANOS DE PRATO</div>
+    <div class="card">TAPETES</div>
+    <div class="card">AMIGURUMI</div>
+    <div class="card">KIT PERSONALIZADO</div>
+  </div>
+</section>
+
+<div id="novidades">
+  <app-vitrine
+  categoria="2"
+  titulo="Meus tabalhos"
+  txtBotao="Ver mais"
+  (verMais)="verMais()"
+  ></app-vitrine>
+</div>
+
+<div id="contato">
+<app-contato></app-contato>
+</div>

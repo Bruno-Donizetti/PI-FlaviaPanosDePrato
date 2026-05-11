@@ -1,0 +1,298 @@
+<main class="admin-layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">FP</span>
+      <div>
+        <strong>Admin</strong>
+        <small>Flavia Panos</small>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button
+        type="button"
+        [class.ativo]="abaAtiva() === 'inicio'"
+        (click)="trocarAba('inicio')"
+      >
+        Pagina inicial
+      </button>
+      <button
+        type="button"
+        [class.ativo]="abaAtiva() === 'produtos'"
+        (click)="trocarAba('produtos')"
+      >
+        Produtos
+      </button>
+      <button
+        type="button"
+        [class.ativo]="abaAtiva() === 'categorias'"
+        (click)="trocarAba('categorias')"
+      >
+        Categorias
+      </button>
+    </nav>
+  </aside>
+
+  <section class="content">
+    <header class="page-header">
+      <div>
+        <p>Painel administrativo</p>
+        <h1>
+          @if (abaAtiva() === 'inicio') {
+            Pagina inicial
+          } @else if (abaAtiva() === 'produtos') {
+            Produtos
+          } @else {
+            Categorias
+          }
+        </h1>
+      </div>
+
+      <button type="button" class="btn-secundario" (click)="carregarDados()">
+        Atualizar
+      </button>
+    </header>
+
+    @if (mensagem()) {
+      <div class="alerta sucesso">{{ mensagem() }}</div>
+    }
+
+    @if (erro()) {
+      <div class="alerta erro">{{ erro() }}</div>
+    }
+
+    @if (carregando()) {
+      <div class="carregando">Carregando...</div>
+    }
+
+    @if (abaAtiva() === 'inicio') {
+      <section class="dashboard">
+        <div class="metrics">
+          <article class="metric-card">
+            <span>Total de produtos</span>
+            <strong>{{ produtos().length }}</strong>
+          </article>
+          <article class="metric-card">
+            <span>Total de categorias</span>
+            <strong>{{ categorias().length }}</strong>
+          </article>
+        </div>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Produtos recentes</h2>
+            <button type="button" (click)="trocarAba('produtos')">Ver produtos</button>
+          </div>
+
+          <div class="recent-grid">
+            @for (produto of produtosRecentes(); track produto.id) {
+              <article class="product-card compact">
+                <img
+                  [src]="produto.imagem || 'favicon.ico'"
+                  [alt]="produto.nome"
+                >
+                <div>
+                  <strong>{{ produto.nome }}</strong>
+                  <span>{{ categoriaNome(produto.categoriaId) }}</span>
+                </div>
+              </article>
+            } @empty {
+              <p class="empty">Nenhum produto cadastrado.</p>
+            }
+          </div>
+        </section>
+      </section>
+    }
+
+    @if (abaAtiva() === 'produtos') {
+      <section class="management-grid">
+        <form class="form-panel" (ngSubmit)="salvarProduto()">
+          <h2>{{ produtoForm().id ? 'Editar produto' : 'Novo produto' }}</h2>
+
+          <label>
+            Nome
+            <input
+              type="text"
+              [ngModel]="produtoForm().nome"
+              (ngModelChange)="atualizarProdutoCampo('nome', $event)"
+              name="nomeProduto"
+              placeholder="Nome do produto"
+            >
+          </label>
+
+          <label>
+            Categoria
+            <select
+              [ngModel]="produtoForm().categoriaId"
+              (ngModelChange)="atualizarProdutoCampo('categoriaId', +$event)"
+              name="categoriaProduto"
+            >
+              @for (categoria of categorias(); track categoria.id) {
+                <option [ngValue]="categoria.id">{{ categoria.categoria }}</option>
+              }
+            </select>
+          </label>
+
+          <label>
+            URL da imagem
+            <input
+              type="url"
+              [ngModel]="produtoForm().imagem"
+              (ngModelChange)="atualizarProdutoCampo('imagem', $event)"
+              name="imagemProduto"
+              placeholder="https://..."
+            >
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-principal">
+              {{ produtoForm().id ? 'Salvar alteracoes' : 'Cadastrar produto' }}
+            </button>
+            <button type="button" class="btn-secundario" (click)="resetarProdutoForm()">
+              Limpar
+            </button>
+          </div>
+        </form>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Produtos por categoria</h2>
+            <span>{{ produtos().length }} item(ns)</span>
+          </div>
+
+          <div class="category-stack">
+            @for (grupo of produtosPorCategoria(); track grupo.categoria.id) {
+              <section class="category-section">
+                <div class="category-heading">
+                  <h3>{{ grupo.categoria.categoria }}</h3>
+                  <span>{{ grupo.produtos.length }} produto(s)</span>
+                </div>
+
+                <div class="product-list">
+                  @for (produto of grupo.produtos; track produto.id) {
+                    <article class="product-row">
+                      <img
+                        [src]="produto.imagem || 'favicon.ico'"
+                        [alt]="produto.nome"
+                      >
+                      <div>
+                        <strong>{{ produto.nome }}</strong>
+                        <span>ID {{ produto.id }}</span>
+                      </div>
+                      <div class="row-actions">
+                        <button type="button" (click)="editarProduto(produto)">Editar</button>
+                        <button
+                          type="button"
+                          class="perigo"
+                          (click)="removerProduto(produto)"
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    </article>
+                  } @empty {
+                    <p class="empty">Nenhum produto nesta categoria.</p>
+                  }
+                </div>
+              </section>
+            }
+
+            @if (produtosSemCategoria().length > 0) {
+              <section class="category-section">
+                <div class="category-heading">
+                  <h3>Sem categoria</h3>
+                  <span>{{ produtosSemCategoria().length }} produto(s)</span>
+                </div>
+
+                <div class="product-list">
+                  @for (produto of produtosSemCategoria(); track produto.id) {
+                    <article class="product-row">
+                      <img
+                        [src]="produto.imagem || 'favicon.ico'"
+                        [alt]="produto.nome"
+                      >
+                      <div>
+                        <strong>{{ produto.nome }}</strong>
+                        <span>ID {{ produto.id }}</span>
+                      </div>
+                      <div class="row-actions">
+                        <button type="button" (click)="editarProduto(produto)">Editar</button>
+                        <button
+                          type="button"
+                          class="perigo"
+                          (click)="removerProduto(produto)"
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    </article>
+                  }
+                </div>
+              </section>
+            }
+          </div>
+        </section>
+      </section>
+    }
+
+    @if (abaAtiva() === 'categorias') {
+      <section class="management-grid">
+        <form class="form-panel" (ngSubmit)="salvarCategoria()">
+          <h2>{{ categoriaForm().id ? 'Editar categoria' : 'Nova categoria' }}</h2>
+
+          <label>
+            Nome
+            <input
+              type="text"
+              [ngModel]="categoriaForm().categoria"
+              (ngModelChange)="atualizarCategoriaCampo('categoria', $event)"
+              name="nomeCategoria"
+              placeholder="Nome da categoria"
+            >
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-principal">
+              {{ categoriaForm().id ? 'Salvar alteracoes' : 'Cadastrar categoria' }}
+            </button>
+            <button type="button" class="btn-secundario" (click)="resetarCategoriaForm()">
+              Limpar
+            </button>
+          </div>
+        </form>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Categorias cadastradas</h2>
+            <span>{{ categorias().length }} item(ns)</span>
+          </div>
+
+          <div class="category-list">
+            @for (categoria of categorias(); track categoria.id) {
+              <article class="category-row">
+                <div>
+                  <strong>{{ categoria.categoria }}</strong>
+                  <span>
+                    {{ totalProdutosCategoria(categoria.id) }} produto(s)
+                  </span>
+                </div>
+                <div class="row-actions">
+                  <button type="button" (click)="editarCategoria(categoria)">Editar</button>
+                  <button
+                    type="button"
+                    class="perigo"
+                    (click)="removerCategoria(categoria)"
+                  >
+                    Excluir
+                  </button>
+                </div>
+              </article>
+            } @empty {
+              <p class="empty">Nenhuma categoria cadastrada.</p>
+            }
+          </div>
+        </section>
+      </section>
+    }
+  </section>
+</main>

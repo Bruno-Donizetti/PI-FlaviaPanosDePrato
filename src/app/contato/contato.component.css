@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Niconne&family=Abril+Fatface&family=Poppins:wght@400;600&display=swap');
+
+.cta {
+  height: 50vh;
+  background-color: #cbb6cf;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  gap: 20px;
+}
+
+/* título */
+.cta h2 {
+  font-family: 'Niconne', cursive;
+  font-size: 48px;
+  color: #8b6fa3;
+}
+
+/* subtítulo */
+.cta p {
+  font-family: 'Abril Fatface', serif;
+  font-size: 20px;
+  color: #8b6fa3;
+}
+
+/* ícone carta */
+.icone-carta {
+  width: 70px;
+  height: 70px;
+  opacity: 0.7;
+}
+
+/* botão */
+button {
+  width: 55px;
+  height: 55px;
+
+  border: none;
+  border-radius: 12px;
+  background-color: #8b6fa3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* hover */
+button:hover {
+  transform: scale(1.1);
+  background-color: #6f547f;
+}
+
+/* 📱 responsivo */
+@media (max-width: 768px) {
+  .cta {
+    height: auto;
+    padding: 40px 20px;
+  }
+
+  .cta h2 {
+    font-size: 34px;
+  }
+
+  .cta p {
+    font-size: 16px;
+  }
+}

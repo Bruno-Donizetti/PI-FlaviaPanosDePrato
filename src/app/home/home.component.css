@@ -1,0 +1,95 @@
+.bem-vindo{
+    background-image: url("/bgBemVindo.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    width: 100%;
+    aspect-ratio: 2 / 1;
+
+    display: flex;
+    align-items: center;
+    
+}
+
+.textoInicio{
+    margin-left: 10%;
+    width: 40%;
+
+    text-align: center;
+    color: #9E87B5;
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+    
+    h1{
+        font-family: Niconne;
+        font-size: 3.8em;
+        font-weight: normal;
+        line-height: 90%;
+    }
+
+    p{
+        font-family: Poppins;
+        font-weight: 500;
+        font-size: 1.3em;
+    }
+    
+    button{
+        font-size: 1em;
+        font-weight: bold;
+        font-size: 1.3em;
+
+        padding: 10px 30px;
+        margin-top: 10%;
+
+        border: none;
+
+        background-color: #9E87B5;
+        color: #F3E5F4;
+    }
+}
+
+
+.categorias {
+  height: 50vh;
+
+  display: flex;
+  align-items: center;
+}
+
+.grid {
+  width: 100%;
+  padding: 0 10%;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  width: 22%;
+  aspect-ratio: 1 / 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  font-family: 'Abril Fatface', serif;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #5a2d5f;
+
+  background-color: #d8c0d9;
+  padding: 10px;
+}
+
+
+.card:nth-child(2) {
+  background-color: #d1b2cf;
+}
+
+.card:nth-child(3) {
+  background-color: #b999c2;
+}
+
+.card:nth-child(4) {
+  background-color: #a98db8;
+}

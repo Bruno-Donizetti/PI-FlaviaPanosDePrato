@@ -1,0 +1,18 @@
+<h2>{{ titulo }}</h2>
+<section class="vitrine">
+
+
+  <div class="grid">
+    <div class="card" *ngFor="let item of itens">
+      <div class="img-container">
+        <img [src]="item.imagem" alt="">
+      </div>
+      <p>{{ item.nome }}</p>
+    </div>
+  </div>
+  @if (isExtendido && !extendeu) {
+    <button (click)="verTudo()">Ver tudo</button>
+  }@else if (!isExtendido) {
+    <button (click)="onVerMais()">Ver mais</button>
+  }
+</section>
