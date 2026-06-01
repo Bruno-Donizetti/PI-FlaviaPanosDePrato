@@ -32,10 +32,12 @@
         font-size: 1.3em;
     }
     
-    button{
-        font-size: 1em;
+    .botao-encomendar{
+        display: inline-block;
+        font-family: Poppins;
         font-weight: bold;
         font-size: 1.3em;
+        text-decoration: none;
 
         padding: 10px 30px;
         margin-top: 10%;

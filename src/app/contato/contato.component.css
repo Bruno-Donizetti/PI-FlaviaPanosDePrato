@@ -35,13 +35,9 @@
 }
 
 /* botão */
-button {
+.whatsapp-link {
   width: 55px;
   height: 55px;
-
-  border: none;
-  border-radius: 12px;
-  background-color: #8b6fa3;
 
   display: flex;
   align-items: center;
@@ -51,15 +47,15 @@ button {
   transition: 0.3s;
 }
 
-button svg {
-  width: 26px;
-  height: 26px;
+.whatsapp-link img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 /* hover */
-button:hover {
+.whatsapp-link:hover {
   transform: scale(1.1);
-  background-color: #6f547f;
 }
 
 /* 📱 responsivo */

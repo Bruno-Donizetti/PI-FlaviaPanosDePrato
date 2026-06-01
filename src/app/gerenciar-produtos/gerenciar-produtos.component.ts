@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
+import { AuthService } from '../auth.service';
 import { CategoriaService } from '../categoria.service';
 import { Categoria } from '../interfaces/categoria.interface';
 import { CriarProdutoPayload, Produto } from '../interfaces/produto.interface';
@@ -31,6 +33,8 @@ type CategoriaForm = {
 export class GerenciarProdutosComponent {
   private readonly produtoService = inject(ProdutoService);
   private readonly categoriaService = inject(CategoriaService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   abaAtiva = signal<AbaAdmin>('inicio');
   carregando = signal(false);
@@ -72,6 +76,11 @@ export class GerenciarProdutosComponent {
   trocarAba(aba: AbaAdmin) {
     this.abaAtiva.set(aba);
     this.limparAvisos();
+  }
+
+  sair() {
+    this.authService.logout();
+    this.router.navigate(['/admin']);
   }
 
   carregarDados() {
@@ -134,11 +143,46 @@ export class GerenciarProdutosComponent {
     }));
   }
 
+  selecionarImagem(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const arquivo = input.files?.[0];
+
+    if (!arquivo) {
+      return;
+    }
+
+    if (!arquivo.type.startsWith('image/')) {
+      this.erro.set('Selecione um arquivo de imagem valido.');
+      input.value = '';
+      return;
+    }
+
+    const leitor = new FileReader();
+
+    leitor.onload = () => {
+      // O resultado do FileReader ja vem pronto para usar no src da imagem.
+      this.atualizarProdutoCampo('imagem', String(leitor.result));
+      this.limparAvisos();
+    };
+
+    leitor.onerror = () => {
+      this.erro.set('Nao foi possivel carregar a imagem selecionada.');
+      input.value = '';
+    };
+
+    leitor.readAsDataURL(arquivo);
+  }
+
   salvarProduto() {
     const form = this.produtoForm();
 
     if (!form.nome.trim() || !form.categoriaId) {
       this.erro.set('Informe o nome e a categoria do produto.');
+      return;
+    }
+
+    if (!form.imagem.trim()) {
+      this.erro.set('Selecione uma imagem para o produto.');
       return;
     }
 

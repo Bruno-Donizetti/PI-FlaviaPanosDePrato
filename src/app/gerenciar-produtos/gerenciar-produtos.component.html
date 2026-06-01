@@ -51,6 +51,9 @@
       <button type="button" class="btn-secundario" (click)="carregarDados()">
         Atualizar
       </button>
+      <button type="button" class="btn-secundario" (click)="sair()">
+        Sair
+      </button>
     </header>
 
     @if (mensagem()) {
@@ -134,15 +137,23 @@
           </label>
 
           <label>
-            URL da imagem
+            Imagem do produto
             <input
-              type="url"
-              [ngModel]="produtoForm().imagem"
-              (ngModelChange)="atualizarProdutoCampo('imagem', $event)"
+              type="file"
+              accept="image/*"
               name="imagemProduto"
-              placeholder="https://..."
+              (change)="selecionarImagem($event)"
             >
           </label>
+
+          @if (produtoForm().imagem) {
+            <div class="image-preview">
+              <img [src]="produtoForm().imagem" alt="Previa da imagem do produto">
+              <span>Imagem carregada</span>
+            </div>
+          } @else {
+            <p class="image-required">Selecione uma imagem para salvar o produto.</p>
+          }
 
           <div class="form-actions">
             <button type="submit" class="btn-principal">

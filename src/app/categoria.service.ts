@@ -13,7 +13,7 @@ import {
 })
 export class CategoriaService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `http://127.0.0.1:3000/categorias`;
+  private readonly apiUrl = `http://localhost:3000/categorias`;
 
   listarCategorias(): Observable<Categoria[]> {
     return this.http.get<Categoria[]>(this.apiUrl);

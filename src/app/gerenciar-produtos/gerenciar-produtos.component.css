@@ -276,6 +276,30 @@
   border-color: #8b6fa3;
 }
 
+.image-preview {
+  display: grid;
+  gap: 8px;
+}
+
+.image-preview img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid #d9c8de;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #efe7f3;
+}
+
+.image-preview span,
+.image-required {
+  color: #806d88;
+  font-size: 0.88rem;
+}
+
+.image-required {
+  margin: 0;
+}
+
 .form-actions,
 .row-actions {
   display: flex;

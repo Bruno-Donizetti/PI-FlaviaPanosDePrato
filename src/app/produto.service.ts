@@ -14,7 +14,7 @@ import {
 })
 export class ProdutoService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `http://127.0.0.1:3000/produtos`;
+  private readonly apiUrl = `http://localhost:3000/produtos`;
 
   listarProdutos(): Observable<Produto[]> {
     return this.http.get<Produto[]>(this.apiUrl);
